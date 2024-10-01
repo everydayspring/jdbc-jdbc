@@ -1,3 +1,5 @@
+// JdbcApplication.java
+
 package com.thesun4sky.jdbc;
 
 import java.sql.Connection;
@@ -19,21 +21,22 @@ public class JdbcApplication {
 		String url = "jdbc:h2:mem:test"; 	// spring.datasource.url
 		String username = "sa";				// spring.datasource.username
 
+		// connection 얻어오기
 		try (Connection connection = DriverManager.getConnection(url, username, null)) {
 			try {
-				// 테이블 생성
+				// 테이블 생성 (statement 생성)
 				String creatSql = "CREATE TABLE USERS (id SERIAL, username varchar(255))";
 				try (PreparedStatement statement = connection.prepareStatement(creatSql)) {
 					statement.execute();
 				}
 
-				// 데이터 추가
+				// 데이터 추가 (statement 생성)
 				String insertSql = "INSERT INTO USERS (username) VALUES ('teasun kim')";
 				try (PreparedStatement statement = connection.prepareStatement(insertSql)) {
 					statement.execute();
 				}
 
-				// 데이터 조회
+				// 데이터 조회 (statement 생성 후 rs = resultSet 수신 & next() 조회)
 				String selectSql = "SELECT * FROM USERS";
 				try (PreparedStatement statement = connection.prepareStatement(selectSql)) {
 					var rs = statement.executeQuery();
